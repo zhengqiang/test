@@ -1,0 +1,45 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="pull-left right-side">
+	<div class="alert alert-success hide error-message"></div>
+	<div class="aw-mod-body">
+		<table class="aw-table">
+			<thead>
+				<tr>
+					<th style="width:40%;">关键词</th>
+					<th align="center" style="width:40%;">链接</th>
+					<th style="width:15%;" align="center"><?php _e('操作'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach ($this->list AS $key => $val) { ?>
+			<tr>
+				<td><?php echo $val['keyword']; ?></td>
+				<td><?php echo $val['link']; ?></td>
+				<td align="center">
+					<a href="javascript:;" onclick="ajax_request(G_BASE_URL + '/admin/link_replace/remove/id-<?php echo $val['id'];?>');" title="<?php _e('删除'); ?>">
+						<i class="aw-icon page-delete"></i>
+					</a>
+				</td>
+			</tr>
+			<?php } ?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3">
+						<form id="add_replace_form" action="admin/link_replace/add/" method="post">
+						关键词: <input type="text" name="keyword" /> &nbsp; 
+						链接: 
+						<input type="text" name="link" /> &nbsp;
+						<a class="btn btn-inverse inline-block" onclick="ajax_post($('#add_replace_form'));" href="javascript:;">添加</a>
+						</form>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		
+	</div>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

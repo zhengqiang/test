@@ -1,0 +1,66 @@
+<?php TPL::output('m/header_landing.tpl.htm'); ?>
+
+<div class="row-fluid">
+		<div class="aw-login-wrap">
+		<h1>
+			<img alt="" src="<?php echo G_STATIC_URL; ?>/css/haitao/img/login_logo.png" />
+		</h1>
+		<div class="aw-login-box">
+			<div class="aw-mod">
+				<div class="aw-mod-head">
+					注册
+				</div>
+				<div class="aw-mod-body clearfix">
+					<form action="account/ajax/register_process/" onsubmit="return false" method="post" id="register_form">
+						<input type="hidden" name="agreement_chk" value="agree" />
+				
+						<?php if ($_GET['weixin_id']) { ?>
+							<input type="hidden" name="weixin_id" value="<?php echo base64_decode($_GET['weixin_id']); ?>" />
+						<?php } ?>
+						
+						<?php if ($this->icode) { ?>
+							<input type="hidden" name="icode" id="icode" value="<?php echo $this->icode; ?>" />
+						<?php } ?>
+						
+						<?php if ($this->return_url) { ?>
+							<input type="hidden" name="return_url" value="<?php echo $this->return_url; ?>" />
+						<?php } ?>
+						
+						<?php if ($this->fromuid AND $_GET['invite_question_id']) { ?>
+						  	<input type="hidden" name="invite_question_id" value="<?php echo htmlspecialchars($_GET['invite_question_id']); ?>"/> 
+						<?php } ?>
+						<ul>
+							<li>
+								<input class="form-control" type="text"  name="user_name" placeholder="用户名" id="aw-login-user-name" />
+							</li>
+							<li>
+								<input class="form-control" type="text"  name="email" placeholder="邮箱" id="aw-login-user-email" />
+							</li>
+							<li>
+								<input class="form-control" type="password" name="password" placeholder="密码" id="aw-login-user-password" />
+							</li>
+							<?php if (!$this->fromuid AND !$this->icode AND get_setting('register_seccode') == 'Y') { ?>
+							<li>
+								<label for="seccode_verify"><img src="<?php echo get_setting('base_url');?>/<?php echo G_INDEX_SCRIPT; ?>account/captcha/" onclick="this.src = G_BASE_URL + '/account/captcha/rnd-' + Math.floor(Math.random() * 10000);" height="36" /></label>
+								
+								<input type="text" id="seccode_verify" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
+							</li>
+							<?php } ?>
+							<li class="last">
+								<a class="pull-right btn btn-large btn-success" id="login_submit" onclick="ajax_post($('#register_form'));" href="javascript:;">注册</a>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('body').addClass('login-body');
+	});
+</script>
+
+<?php TPL::output('m/footer.tpl.htm'); ?>

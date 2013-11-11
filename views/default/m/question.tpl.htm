@@ -1,0 +1,65 @@
+<?php TPL::output('m/header.tpl.htm'); ?>
+
+<div class="row-fluid ht-question-detail">
+	<div class="col-sm-12">
+		<div class="ht-mod">
+			<div class="ht-mod-head">
+				<h1><?php echo $this->question_info['question_content']; ?>&nbsp;&nbsp;<span><?php echo $this->question_info['sub_title']?></span></h1>
+			</div>
+			<div class="ht-mod-body">
+				<?php echo $this->question_info['question_detail']; ?>
+				
+				<?php if ($this->question_info['attachs']) {  ?>
+				<div class="aw-comment-upload-img-list">
+				<?php foreach ($this->question_info['attachs'] AS $attach) { ?>
+				<?php if ($attach['is_image'] AND !in_array($attach['id'], $this->question_info['attachs_ids'])) { ?>
+					<a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-polaroid" alt="<?php echo $attach['attach_name']; ?>" /></a>
+				<?php } ?>
+				<?php } ?>
+				</div>
+				<?php } ?>
+			</div>
+			<div class="ht-mod-footer">
+				<span class="ht-sort-tags"><a href="javascript:;"<?php if (!$this->question_info['question_thanks']) { ?> onclick="question_thanks(<?php echo $this->question_info['question_id']; ?>, this);"<?php } ?>><i class="icon-heart-empty <?php if ($val['question_thanks']) { ?> active<?php } ?>"></i><b><?php echo $this->question_info['thanks_count']; ?></b></a></span>
+				<a class="btn btn-mini pull-right btn-success" href="redirect/id-<?php echo urlencode(base64_encode($this->question_info['buy_link'])); ?>__uid-<?php echo $this->question_info['published_uid']; ?>">购物直达</a>
+			</div>
+		</div>
+		<div class="ht-comment-list clearfix">
+			<h3><?php echo $this->question_info['answer_count']; ?> 条评论</h3>
+			<?php if ($this->answers_list) { ?>
+			<ul>
+				<?php foreach ($this->answers_list AS $key => $val) { ?>
+				<li>
+					<span class="pull-right ht-comment-opera">
+							<a class="<?php if ($val['question_thanks']) { ?> active<?php } ?>" onclick="agreeVote(this, '<?php echo $val['user_name']; ?>', <?php echo $val['answer_id']; ?>)"><i class="icon-thumbs-up-alt"></i><b><?php echo $val['agree_count']; ?></b></a><a<?php if ($val['agree_status'] == -1) { ?> class="active"<?php } ?>><i class="icon-thumbs-down-alt"></i></a>
+					</span>
+					<span class="ht-color-orange"><?php echo $val['user_name']; ?></span> <span><?php echo date_friendly($val['add_time']); ?></span>
+					<p><?php echo nl2br($val['answer_content']); ?></p>
+				</li>
+				<?php } ?>
+			</ul>
+			<?php } ?>
+			
+			<?php if ($this->question_info['lock']) { ?>
+			<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
+			<?php } else if (!$this->user_id) { ?>
+			<p align="center">要回复主题请先<a href="m/login/">登录</a>或<a href="m/register/">注册</a></p>
+			<?php } else if ($this->user_answered) { ?>
+			<p align="center"><?php _e('一个主题只能回复一次'); ?><?php if (get_setting('answer_edit_time')) { ?>, <?php _e('你可以在发言后 %s 分钟内编辑回复过的内容', get_setting('answer_edit_time')); ?><?php } ?></p>
+			<?php } else if ((get_setting('answer_self_question') == 'N') && ($this->user_id == $this->question_info['published_uid'])) { ?>
+			<p align="center"><?php _e('不能回复自己发布的主题, 你可以修改主题内容'); ?></p>
+			<?php } else { ?>
+			<form action="question/ajax/save_answer/" onsubmit="return false;" method="post" id="answer_form">
+	        	<div>
+	        		<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+		        	<input type="hidden" name="question_id" value="<?php echo $this->question_id; ?>" />
+					<textarea name="answer_content" class="form-control" id="answer_content" rows="4" placeholder="说点什么吧..."></textarea>
+					<a class="ht-icon comment pull-right" onclick="ajax_post($('#answer_form'));">评论</a>
+	        	</div>
+			</form>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+
+<?php TPL::output('m/footer.tpl.htm'); ?>

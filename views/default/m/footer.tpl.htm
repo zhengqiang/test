@@ -1,0 +1,44 @@
+<!-- public footer -->
+<div id="loading" style="display:none">
+	<div id="loading_box"></div>
+</div>
+
+<div style="display:none">
+	<?php echo get_setting('statistic_code'); ?>
+</div>
+<!-- 弹窗导航 -->
+<div id="modal" class="modal-box">
+	<div class="bg"></div>
+	<div class="wrap">
+		<div class="content">
+			<article>
+				<a href="m/explore/category-1">网友推荐</a>
+				<a href="m/explore/category-2">开箱晒单</a>
+				<a href="m/explore/category-6">经验分享</a>
+			</article>
+		</div>
+	</div>
+	<footer>
+		<span class="modal-cancle">取消</span>
+	</footer>
+</div>
+<!-- /弹窗导航 -->
+<!-- /public footer -->
+<script type="text/javascript">
+	$(function()
+	{
+		$('.i-list').click(function()
+		{
+			$('.modal-box').addClass('render');
+			setTimeout(function(){
+				$('.modal-box').addClass('active');
+			},100);
+		});
+		$('.modal-cancle').click(function()
+		{
+			$('.modal-box').removeClass('active render');
+		});
+	});
+</script>
+</body>
+</html>

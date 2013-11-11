@@ -1,0 +1,48 @@
+<?php TPL::output('m/header_landing.tpl.htm'); ?>
+
+<div class="row-fluid">
+		<div class="aw-login-wrap">
+		<!-- 登陆框 -->
+		<h1>
+			<img alt="" src="<?php echo G_STATIC_URL; ?>/css/haitao/img/login_logo.png" />
+		</h1>
+		<div class="aw-login-box">
+			<div class="aw-mod">
+				<div class="aw-mod-head">
+					<?php if (get_setting('invite_reg_only') == 'N') { ?><a class="ht-icon b-new-user pull-right" href="<?php echo get_setting('base_url');?>/<?php if (get_setting('url_rewrite_enable') != 'Y') { ?><?php echo G_INDEX_SCRIPT; ?><?php } ?>m/register/">注册新用户</a><?php } ?>
+					登录					
+					
+				</div>
+				<div class="aw-mod-body clearfix">
+					<form action="account/ajax/login_process/" onsubmit="return false" method="post" id="login_form">
+						<?php if ($_GET['weixin_id']) { ?>
+						<input type="hidden" name="weixin_id" value="<?php echo base64_decode($_GET['weixin_id']); ?>" />
+						<?php } ?>
+						
+						<input type="hidden" name="return_url" value="<?php echo $this->return_url; ?>" />
+						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+						<ul>
+							<li>
+								<input class="form-control" type="text" value="admin" name="user_name" placeholder="邮箱/用户名" id="aw-login-user-name">
+							</li>
+							<li>
+								<input class="form-control" type="password" name="password" placeholder="密码" id="aw-login-user-password">
+							</li>
+							<li class="last">
+								<a class="pull-right btn btn-large btn-success" id="login_submit" onclick="ajax_post($('#login_form'));" href="javascript:;">登录</a>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('body').addClass('login-body');
+	});
+</script>
+
+<?php TPL::output('m/footer.tpl.htm'); ?>

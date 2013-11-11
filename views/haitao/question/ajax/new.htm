@@ -1,0 +1,30 @@
+<?php foreach($this->question_list as $key => $val) { ?>
+<li>
+	<div class="aw-mod">
+		<div class="aw-mod-head clearfix">
+			<a target="_blank" href="question/<?php echo $val['question_id']; ?>"><img src="<?php echo get_question_image_attach($val['question_id'], $val['question_detail']); ?>" alt="" /></a>
+		</div>
+		<div class="aw-mod-body">
+			<h2><a target="_blank" href="question/<?php echo $val['question_id']; ?>"><?php echo $val['question_content']; ?></a></h2>
+			<p>
+				<?php echo strip_tags($val['question_detail'], '<br />'); ?>
+			</p>
+		</div>
+		<div class="aw-mod-footer">
+			<?php if ($val['buy_link']) { ?>
+			<span class="pull-right">
+				<a href="redirect/id-<?php echo urlencode(base64_encode($val['buy_link'])); ?>__uid-<?php echo $val['published_uid']; ?>" target="_blank"><i class="ht-icon lock"></i> 去看看</a>
+			</span>
+			<?php } ?>
+			
+			<?php if (isset($val['question_thanks'])) { ?>
+			<span><a href="javascript:;"<?php if (!$val['question_thanks']) { ?> onclick="question_thanks(<?php echo $val['question_id']; ?>, this);"<?php } ?>><i data-toggle="tooltip" data-original-title="喜欢" data-placement="top" class="ht-icon like active"></i><b><?php echo $val['thanks_count']; ?></b></a></span>
+			<?php } ?>
+			<span><a href="question/<?php echo $val['question_id']; ?>#!comments"><i class="ht-icon message active" data-toggle="tooltip" data-original-title="去评论" data-placement="top"></i><?php echo $val['answer_count']; ?></a></span>
+			<span>
+				<a href="javascript:;" onclick="$.dialog('shareOut', {item_type:'question', item_id:<?php echo $val['question_id']; ?>});"><i class="ht-icon share-out active" data-toggle="tooltip" data-original-title="分享" data-placement="top"></i></a>
+			</span>
+		</div>
+	</div>
+</li>
+<?php } ?>

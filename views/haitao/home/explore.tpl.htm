@@ -1,0 +1,86 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+	
+	<div class="aw-container-wrap">
+		<div class="aw-container aw-wecenter">
+			<?php TPL::output('block/content_nav_menu.tpl.htm'); ?>
+			
+			<div class="row aw-content-wrap">
+				<div class="ht-product-list clearfix">
+					<ul id="bp_contents" >
+						<?php echo $this->question_list_bit; ?>
+						
+						<?php if ($this->sidebar_hot_topics) { ?>
+						<?php } ?>
+					</ul>
+				</div>
+				
+				<a id="bp_more" auto-load="false" data-url="<?php if ($this->feature_info) { ?>feature/id-<?php echo $this->feature_info['id']; ?>__page-{page}<?php } else { ?>home/explore/page-{page}<?php } ?>__sort_type-<?php echo preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']); ?>__category-<?php echo $this->category_info['id']; ?><?php if ($_GET['day']) { ?>__day-<?php echo intval($_GET['day']); ?><?php } ?>" href="<?php if ($this->feature_info) { ?>feature/id-<?php echo $this->feature_info['id']; ?>__page-<?php echo $this->ajax_start_page; ?><?php } else { ?>home/explore/page-<?php echo $this->ajax_start_page; ?><?php } ?>__sort_type-<?php echo preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']); ?>__category-<?php echo $this->category_info['id']; ?><?php if ($_GET['day']) { ?>__day-<?php echo intval($_GET['day']); ?><?php } ?>" class="aw-load-more-content">
+					<span><?php _e('更多'); ?>...</span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript"> 
+	var loadNum = 0, load_status = 0,
+	options = 
+	{
+		autoResize : true,
+		container : $('.ht-product-list'),
+		offset : 20,
+		itemWidth : 311
+	};
+	
+	<?php if ($this->category_info['id'] == 1 OR $_GET['category'] == 1) { ?>
+	$(window).load(function()
+	{
+		$('.ht-product-list').addClass('flow');
+		$('#bp_contents li').wookmark(options);
+		$.each($('.ht-product-list li .aw-mod-body p'), function (i, e)
+		{
+			$(this).html(_DoLinks($(this).html()))
+		});
+
+	});
+	<?php } ?>
+	
+	
+	
+	$(document).ready(function () {
+		bp_more_load(G_BASE_URL + '/question/ajax/discuss/<?php if ($this->feature_info) { ?>feature_id-<?php echo $this->feature_info['id']; ?>__<?php } ?>__sort_type-<?php echo preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']); ?>__category-<?php if ($this->category_info['id']) { echo $this->category_info['id']; } else { echo $_GET['category']; } ?><?php if ($_GET['day']) { ?>__day-<?php echo intval($_GET['day']); ?><?php } ?>', $('#bp_more'), $('#bp_contents'), <?php echo $this->ajax_start_page; ?>, bp_more_load_callback);
+		
+		$(window).scroll(function(){
+			if ($(document).scrollTop() >= $(document).height() - $(window).height() && load_status == 0)
+			{
+				load_status = 1;
+				$('#bp_more').click();
+				if (loadNum == 1)
+				{
+					$('#bp_more').unbind('click');
+				}
+			}
+		});
+	});
+	function bp_more_load_callback()
+	{
+		$.each($('.ht-product-list li .aw-mod-body p'), function (i, e)
+		{
+			$(this).html(_DoLinks($(this).html()))
+		});
+		<?php if ($this->category_info['id'] == 1 OR $_GET['category'] == 1) { ?>
+		$('#bp_contents').imagesLoaded(function()
+		{
+			$('#bp_contents li').wookmark(options);
+		});
+		$('#bp_contents li').wookmark(options);
+
+		<?php } ?>
+		
+		$('#bp_more').attr('href', G_BASE_URL + '/' + $('#bp_more').attr('data-url').replace('{page}', _bp_more_pages['bp_more']));
+
+		loadNum += 1;
+		load_status = 0;
+	}
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

@@ -1,0 +1,34 @@
+<?php foreach ($this->question_list AS $key => $val) { ?>
+<li>
+	<div class="ht-mod-head">
+		<h2><a class="link" target="_blank" href="m/question/<?php echo $val['question_id']; ?>"><?php echo $val['question_content']; ?>&nbsp;&nbsp;<span><?php echo $val['sub_title']?></span></a></h2>
+		<p><span class="pull-right"><?php echo $val['user_info']['user_name']; ?> 推荐</span><?php echo date_friendly($val['add_time']); ?></p>
+	</div>
+	<div class="ht-mod-body clearfix">
+		<div class="ht-dynamic-list-img">
+			<a href="m/question/<?php echo $val['question_id']; ?>"><img class="img-polaroid" src="<?php echo get_question_image_attach($val['question_id'], $val['question_detail']); ?>" alt="" /></a>
+		</div>
+		
+		<div class="ht-dynamic-list-content-box">
+			<div class="ht-dynamic-list-content">
+				<p><?php echo $val['question_detail']; ?></p>
+				
+				<?php if ($val['attachs']) {  ?>
+				<div class="aw-comment-upload-img-list">
+				<?php foreach ($val['attachs'] AS $attach) { ?>
+				<?php if ($attach['is_image'] AND !in_array($attach['id'], $val['attachs_ids'])) { ?>
+					<a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-polaroid" alt="<?php echo $attach['attach_name']; ?>" /></a>
+				<?php } ?>
+				<?php } ?>
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<div class="ht-mod-footer">
+		<span class="ht-sort-tags"><a href="javascript:;"<?php if (!$val['question_thanks']) { ?> onclick="question_thanks(<?php echo $val['question_id']; ?>, this);"<?php } ?>><i class="icon-heart-empty<?php if ($val['question_thanks']) { ?> active<?php } ?>"></i><b><?php echo $val['thanks_count']; ?></b></a></span>
+		<span class="ht-sort-tags"><a href="m/question/<?php echo $val['question_id']; ?>#comments"><i class="icon-comment-alt" data-toggle="tooltip" data-original-title="去评论" data-placement="top"></i><b><?php echo $val['answer_count']; ?></b></a></span>
+		<a class="btn btn-mini btn-success" href="redirect/id-<?php echo urlencode(base64_encode($val['buy_link'])); ?>__uid-<?php echo $val['published_uid']; ?>"><i class="icon-shopping-cart"></i>购物直达</a>
+	</div>
+</li>
+<?php } ?>

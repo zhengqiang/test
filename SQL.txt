@@ -1,0 +1,65 @@
+ALTER TABLE `aws_question` ADD  `buy_link` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ;
+
+INSERT INTO `aws_users_group` (
+`group_id` ,
+`type` ,
+`custom` ,
+`group_name` ,
+`reputation_lower` ,
+`reputation_higer` ,
+`reputation_factor` ,
+`permission`
+)
+VALUES (
+NULL ,  '0',  '1',  '自定义用户组',  '0',  '0',  '0', 'a:5:{s:16:"publish_question";s:1:"1";s:13:"upload_attach";s:1:"1";s:11:"human_valid";s:1:"1";s:19:"question_valid_hour";s:2:"10";s:17:"answer_valid_hour";s:2:"10";}'
+) ;
+
+ALTER TABLE  `aws_question` ADD  `pull_index` TINYINT( 1 ) NULL DEFAULT  '0', ADD INDEX (  `pull_index` ) ;
+
+INSERT INTO `aws_system_setting` (`varname`, `value`) VALUES ('pull_index_uids', '');
+
+CREATE TABLE IF NOT EXISTS `aws_link_replace` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `link` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `keyword` (`keyword`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `aws_users` ADD `amazon_tag` VARCHAR( 64 ) NULL;
+
+ALTER TABLE `aws_users` ADD `coin` INT( 10 ) NULL DEFAULT '0', ADD INDEX ( `coin` ) ;
+
+CREATE TABLE IF NOT EXISTS `aws_coin_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `action` varchar(16) DEFAULT NULL,
+  `coin` int(11) DEFAULT NULL,
+  `note` varchar(128) DEFAULT NULL,
+  `balance` int(11) DEFAULT '0',
+  `time` int(10) DEFAULT '0',
+  `item_id` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `action` (`action`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES(113, 'slidebar_whats_are_we_buy', 's:2450:"<ul>\n							<li><a href="http://www.amazon.com/gp/product/B002FCGI8Y/ref=as_li_ss_tl?ie=UTF8&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B002FCGI8Y&#038;linkCode=as2&#038;tag=np0a-20" target="_blank">Mr.Beams MB723用电池的动作感应灯，随手粘随处用</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B001M0MN02/ref=as_li_ss_tl?ie=UTF8&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B001M0MN02&#038;linkCode=as2&#038;tag=np0a-20" target="_blank">ExOfficio Give-N-Go Boxer Brief紧身平角内裤</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B0039L7KNC/ref=as_li_ss_tl?ie=UTF8&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B0039L7KNC&#038;linkCode=as2&#038;tag=np0a-20" target="_blank">New Chapter LifeShield新章冬虫夏草生命护盾，养肺补肾的草本良方</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B000IDYKNC/ref=as_li_ss_tl?ie=UTF8&#038;tag=naplesblue-20&#038;linkCode=as2&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B000IDYKNC" target="_blank">ResQMe，小玩意儿有大用处，汽车车窗救生锤钥匙链</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B0043OYFKU/ref=as_li_ss_tl?ie=UTF8&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B0043OYFKU&#038;linkCode=as2&#038;tag=np0a-20">Olay Pro-X超轻洗脸刷，有效去除角质层</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B002VXDCHW/ref=as_li_ss_tl?ie=UTF8&#038;tag=np0a-20&#038;linkCode=as2&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B002VXDCHW" target="_blank">IQAir HealthPro 250最受推崇的空气净化器</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B008KEHA2E/ref=as_li_ss_tl?ie=UTF8&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B008KEHA2E&#038;linkCode=as2&#038;tag=np0a-20" target="_blank">Omron electro电子疼痛治疗仪PM3030，有效缓解各种痛，美网销量第一</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B002U50QQQ/ref=as_li_ss_tl?ie=UTF8&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B002U50QQQ&#038;linkCode=as2&#038;tag=np0a-20">Mavea Elemaris XL滤水壶，2升容量，不会跑碳粒的Brita</a></li>\n			<li><a href="http://www.amazon.com/gp/product/B000ASGMAO/ref=as_li_ss_tl?ie=UTF8&#038;tag=np0a-20&#038;linkCode=as2&#038;camp=1789&#038;creative=390957&#038;creativeASIN=B000ASGMAO">IQAir® New Edition HealthPro® Compact满足基本需要的IQAir</a></li> \n						</ul>";');
+
+ALTER TABLE  `aws_question` ADD  `cover_attach` INT( 10 ) NULL;
+
+CREATE TABLE IF NOT EXISTS `aws_ios_push` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `device_token` varchar(64) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `result` int(2) DEFAULT NULL,
+  `push_time` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `result` (`result`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `aws_ios_push` ADD  `item_id` INT( 10 ) NULL DEFAULT '0';
+
+ALTER TABLE `aws_question` ADD `sub_title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;

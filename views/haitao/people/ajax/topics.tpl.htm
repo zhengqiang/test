@@ -1,0 +1,7 @@
+<?php if ($this->topic_list) { ?>
+<?php foreach($this->topic_list as $key => $val) {?>	
+<li>
+	<a href="topic/<?php echo $val['url_token']; ?>" class="aw-topic-name"><?php echo $val['topic_title']; ?></a><i class="ht-icon delete" data-placement="top" data-toggle="tooltip" data-original-title="取消关注" onclick="focus_topic($(this), <?php echo $val['topic_id']?>);"></i>
+</li>
+<?php } ?>			
+<?php } ?>
